@@ -63,7 +63,7 @@ def computeDistancePointToSegment(q, p1, p2):
     (0: on segment, 1: left of segment, 2: right of segment)
     """
     vec1 = (p2[0] - p1[0], p2[1] - p1[1])  # vector from p1 to p2
-    vec2 = (p1[0] - q[0], p1[1] - q[1])  # vector from q to p1
+    vec2 = (q[0] - p1[0], q[1] - p1[1])  # vector from q to p1
     rel_length = (vec1[0] * vec2[0] + vec1[1] * vec2[1]) / (
         vec1[0] ** 2 + vec1[1] ** 2
     )  # dot product divided by norm squared
@@ -102,7 +102,7 @@ def computeTangentVectorToPolygon(P, q):
     :return: Tangent vector to the polygon
     """
     dist = float("inf")
-    for i in range(len(P) - 1):
+    for i in range(-1, len(P) - 1):
         d, _ = computeDistancePointToSegment(q, P[i], P[i + 1])
         if d < dist:
             dist = d
@@ -126,3 +126,4 @@ def computeTangentVectorToPolygon(P, q):
             (-q[1] + closest_segment[1][1]) / distance(closest_segment[1], q),
             (q[0] - closest_segment[1][0]) / distance(closest_segment[1], q),
         ]
+    return tangent
