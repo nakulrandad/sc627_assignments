@@ -118,12 +118,27 @@ def computeTangentVectorToPolygon(P, q):
         ]
     elif state == 1:
         tangent = [
-            -q[1] + closest_segment[0][1],
-            q[0] - closest_segment[0][0],
-        ] / distance(closest_segment[0], q)
+            (-q[1] + closest_segment[0][1]) / distance(closest_segment[0], q),
+            (q[0] - closest_segment[0][0]) / distance(closest_segment[0], q),
+        ]
+        # print(f"Norm for state 1 is: {distance(closest_segment[0], q)}")
     else:
         tangent = [
             (-q[1] + closest_segment[1][1]) / distance(closest_segment[1], q),
             (q[0] - closest_segment[1][0]) / distance(closest_segment[1], q),
         ]
+        # print(f"Norm for state 2 is: {distance(closest_segment[1], q)}")
     return tangent
+
+
+def computePolygonCentroid(P):
+    """
+    Compute the centroid of a polygon
+    :param P: Polygon {an array with n rows and 2 columns}
+    :return: Point (centroid)
+    """
+    N = len(P)
+    return [
+        sum([P[i][0] for i in range(N)]) / N,
+        sum([P[j][1] for j in range(N)]) / N,
+    ]
