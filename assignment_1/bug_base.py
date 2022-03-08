@@ -21,6 +21,7 @@ from helper import (
     computeTangentVectorToPolygon,
     computeDistancePointToSegment,
 )
+from path_viewer import showPath
 
 
 rospy.init_node("bug_base", anonymous=True)
@@ -50,7 +51,8 @@ result.pose_final.theta = 0  # in radians (0 to 2pi)
 current_pose = np.array([result.pose_final.x, result.pose_final.y])
 path = [current_pose]
 
-while distance(current_pose, goal) > step_size:
+print("\n#####\nStarting to move towards goal\n#####\n")
+while distance(current_pose, goal) >= step_size:
     dist = float("inf")
     for i, obstacle in enumerate(obstacles):
         d = computeDistancePointToPolygon(obstacle, current_pose)
@@ -92,10 +94,12 @@ while distance(current_pose, goal) > step_size:
     # print(result.pose_final.x, result.pose_final.y, result.pose_final.theta)
     # print(f"Distance to goal: {distance(current_pose, goal)}")
 
-print("Goal has been achieved!")
+print("\n#####\nGoal has been achieved!\n#####\n")
 
-# with open(
-#     os.path.join(os.path.dirname(__file__), "output_base.txt"), "w"
-# ) as f:
-#     for waypoint in path:
-#         f.write(f"{waypoint[0]},{waypoint[1]}\n")
+with open(
+    os.path.join(os.path.dirname(__file__), "output_base.txt"), "w"
+) as f:
+    for waypoint in path:
+        f.write(f"{waypoint[0]},{waypoint[1]}\n")
+
+# showPath()

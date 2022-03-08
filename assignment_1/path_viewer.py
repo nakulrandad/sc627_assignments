@@ -42,10 +42,15 @@ def readPath(filename="output.txt"):
     return path
 
 
-def showPath(isFigSaved=False, inputFile="input.txt", outputFile="output.txt"):
+def showPath(
+    isFigSaved=False,
+    inputFile="input.txt",
+    outputBaseFile="output_base.txt",
+    output1File="output_1.txt",
+):
     start, goal, _, obstacles = readInputs(inputFile)
-    path_base = readPath("output_base.txt")
-    path_1 = readPath("output_1.txt")
+    path_base = readPath(outputBaseFile)
+    path_1 = readPath(output1File)
 
     plt.figure()
     # plt.grid()
@@ -63,10 +68,12 @@ def showPath(isFigSaved=False, inputFile="input.txt", outputFile="output.txt"):
         plt.gca().add_patch(t1)
 
     if isFigSaved:
-        plt.savefig(os.path.join(os.path.dirname(__file__), "path.png"))
+        plt.savefig(
+            os.path.join(os.path.dirname(__file__), "results", "path.png")
+        )
 
     plt.show()
 
 
 if __name__ == "__main__":
-    showPath()
+    showPath(True)

@@ -22,6 +22,7 @@ from helper import (
     computeDistancePointToSegment,
     computePolygonCentroid,
 )
+from path_viewer import showPath
 
 
 rospy.init_node("bug_1", anonymous=True)
@@ -122,8 +123,8 @@ def depart_obs(obstacle, obs_leave_pose):
             break
 
 
-print("\n#####\nMoving towards goal\n#####\n")
-while distance(current_pose, goal) > step_size:
+print("\n#####\nStarting to move towards goal\n#####\n")
+while distance(current_pose, goal) >= step_size:
     dist = float("inf")
     for i, obstacle in enumerate(obstacles):
         d = computeDistancePointToPolygon(obstacle, current_pose)
@@ -135,7 +136,7 @@ while distance(current_pose, goal) > step_size:
     # print(f"Distance to obs {i}: {dist}")
     dir_vec = (goal - current_pose) / np.linalg.norm(goal - current_pose)
     dist_to_polygon_frd = computeDistancePointToPolygon(
-        obstacles[closest_obs_id], current_pose + dir_vec * step_size * 0.8
+        obstacles[closest_obs_id], current_pose + dir_vec * step_size * 0.5
     )
     if dist_to_polygon_frd < step_size:
         obs_leave_node = circumnavigate_obs(
@@ -153,3 +154,5 @@ print("\n#####\nGoal has been achieved!\n#####\n")
 with open(os.path.join(os.path.dirname(__file__), "output_1.txt"), "w") as f:
     for waypoint in path:
         f.write(f"{waypoint[0]},{waypoint[1]}\n")
+
+# showPath()
