@@ -19,7 +19,6 @@ from helper import (
     distance,
     computeDistancePointToPolygon,
     computeTangentVectorToPolygon,
-    computeDistancePointToSegment,
 )
 from path_viewer import showPath
 

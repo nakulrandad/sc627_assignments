@@ -56,6 +56,7 @@ result.pose_final.x = start[0]
 result.pose_final.y = start[1]
 result.pose_final.theta = 0  # in radians (0 to 2pi)
 current_pose = np.array([result.pose_final.x, result.pose_final.y])
+plan = [current_pose.copy()]
 path = [current_pose.copy()]
 
 
@@ -66,6 +67,7 @@ def update_waypoint(dir_vec):
     # theta is the orientation of robot in radians (0 to 2pi)
     wp.pose_dest.theta = math.atan2(dir_vec[1], dir_vec[0])
     # print("Sending waypoint:\n", wp.pose_dest, "\n")
+    plan.append([wp.pose_dest.x, wp.pose_dest.y])
     # send waypoint to turtlebot3 via move_xy server
     client.send_goal(wp)
     client.wait_for_result()
@@ -77,10 +79,10 @@ def update_waypoint(dir_vec):
 
 
 def computeGrad():
-    dstar = 1.5
-    chi = 1.4
-    Qstar = 1.5
-    eta = 1.0
+    dstar = 2.0
+    chi = 0.8
+    Qstar = 2.0
+    eta = 0.8
 
     if distance(current_pose, goal) <= dstar:
         attractive_grad = (goal - current_pose) * chi
@@ -119,6 +121,12 @@ print("\n#####\nGoal has been achieved!\n#####\n")
 
 with open(os.path.join(os.path.dirname(__file__), "output.txt"), "w") as f:
     for waypoint in path:
+        f.write(f"{waypoint[0]},{waypoint[1]}\n")
+
+with open(
+    os.path.join(os.path.dirname(__file__), "output_plan.txt"), "w"
+) as f:
+    for waypoint in plan:
         f.write(f"{waypoint[0]},{waypoint[1]}\n")
 
 # showPath()

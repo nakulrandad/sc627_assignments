@@ -47,6 +47,7 @@ def showPath(
     inputFile="input.txt",
     outputBaseFile="output_base.txt",
     output1File="output_1.txt",
+    dist_to_goal_arr=None,
 ):
     start, goal, _, obstacles = readInputs(inputFile)
     path_base = readPath(outputBaseFile)
@@ -73,6 +74,20 @@ def showPath(
         )
 
     plt.show()
+
+    if dist_to_goal_arr != None:
+        plt.figure()
+        plt.grid()
+        plt.xlabel("Time (s)")
+        plt.ylabel("Distance to goal (m)")
+        plt.plot(*np.array(dist_to_goal_arr).T)
+        if isFigSaved:
+            plt.savefig(
+                os.path.join(
+                    os.path.dirname(__file__), "results", "dist_to_goal.png"
+                )
+            )
+        plt.show()
 
 
 if __name__ == "__main__":

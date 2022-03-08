@@ -42,14 +42,21 @@ def readPath(filename="output.txt"):
     return path
 
 
-def showPath(isFigSaved=False, inputFile="input.txt", outputFile="output.txt"):
+def showPath(
+    isFigSaved=False,
+    inputFile="input.txt",
+    outputFile="output.txt",
+    outputPlanFile="output_plan.txt",
+):
     start, goal, _, obstacles = readInputs(inputFile)
     path = readPath(outputFile)
+    plan = readPath(outputPlanFile)
 
     plt.figure()
     # plt.grid()
     plt.axis("equal")
-    plt.plot(*np.array(path).T, color="black", label="Trajectory")
+    plt.plot(*np.array(path).T, color="black", label="Executed Path")
+    plt.plot(*np.array(plan).T, "--", color="magenta", label="Planned Path")
     plt.plot(start[0], start[1], "bo", markersize=8, label="Start")
     plt.plot(goal[0], goal[1], "go", markersize=8, label="Goal")
     plt.legend(loc="lower right")
