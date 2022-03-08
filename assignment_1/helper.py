@@ -142,3 +142,15 @@ def computePolygonCentroid(P):
         sum([P[i][0] for i in range(N)]) / N,
         sum([P[j][1] for j in range(N)]) / N,
     ]
+
+
+def computeNormalVectorToPolygon(P, q):
+    """
+    Computes the normal vector to a polygon
+    :param P: Polygon {an array with n rows and 2 columns}
+    :param q: Point
+    :return: Normal vector to the polygon
+    """
+    tangent = computeTangentVectorToPolygon(P, q)
+    normal = [-tangent[1], tangent[0]]
+    return normal
