@@ -65,7 +65,7 @@ def update_waypoint(dir_vec):
     wp.pose_dest.y = result.pose_final.y + dir_vec[1] * step_size
     # theta is the orientation of robot in radians (0 to 2pi)
     wp.pose_dest.theta = math.atan2(dir_vec[1], dir_vec[0])
-    print("Sending waypoint:\n", wp.pose_dest, "\n")
+    # print("Sending waypoint:\n", wp.pose_dest, "\n")
     # send waypoint to turtlebot3 via move_xy server
     client.send_goal(wp)
     client.wait_for_result()
@@ -79,8 +79,8 @@ def update_waypoint(dir_vec):
 def computeGrad():
     dstar = 1.5
     chi = 1.4
-    Qstar = 2
-    eta = 1.2
+    Qstar = 1.5
+    eta = 1.0
 
     if distance(current_pose, goal) <= dstar:
         attractive_grad = (goal - current_pose) * chi
@@ -105,8 +105,9 @@ def computeGrad():
 
 print("\n#####\nStarting to move towards goal\n#####\n")
 
-while distance(current_pose, goal) > step_size:
-    if distance(current_pose, goal) <= 0.3:
+while distance(current_pose, goal) >= step_size:
+    closeness_threshold = 0.3
+    if distance(current_pose, goal) <= closeness_threshold:
         dir_vec = goal - current_pose
         dir_vec /= np.linalg.norm(dir_vec)
         update_waypoint(dir_vec)

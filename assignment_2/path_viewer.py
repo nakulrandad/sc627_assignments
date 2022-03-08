@@ -59,10 +59,12 @@ def showPath(isFigSaved=False, inputFile="input.txt", outputFile="output.txt"):
         plt.gca().add_patch(t1)
 
     if isFigSaved:
-        plt.savefig(os.path.join(os.path.dirname(__file__), "path.png"))
+        plt.savefig(
+            os.path.join(os.path.dirname(__file__), "results", "path.png")
+        )
 
     plt.show()
 
 
 if __name__ == "__main__":
-    showPath()
+    showPath(True)
