@@ -12,6 +12,7 @@ Author: Nakul Randad (https://github.com/nakulrandad)
 import os
 import sys
 import math
+import time
 import numpy as np
 from sc627_helper.msg import MoveXYAction, MoveXYGoal, MoveXYResult
 import rospy
@@ -105,6 +106,7 @@ def computeGrad():
     return grad
 
 
+startTime = time.time()
 print("\n#####\nStarting to move towards goal\n#####\n")
 
 while distance(current_pose, goal) >= step_size:
@@ -118,6 +120,8 @@ while distance(current_pose, goal) >= step_size:
         update_waypoint(dir_vec)
 
 print("\n#####\nGoal has been achieved!\n#####\n")
+timeTaken = time.time() - startTime
+print(f"\n#####\nTime taken by algorithm: {timeTaken} secs\n#####\n")
 
 with open(os.path.join(os.path.dirname(__file__), "output.txt"), "w") as f:
     for waypoint in path:
